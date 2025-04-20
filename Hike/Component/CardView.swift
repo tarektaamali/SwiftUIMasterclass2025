@@ -11,6 +11,7 @@ struct CardView: View {
     // Mark: - PROPERTIES
     @State private var imageNumber : Int = 1
     @State private var randomNumber : Int = 1
+    @State private var isShowingSheet : Bool = false
     
     // Mark: - Functions
     
@@ -43,15 +44,16 @@ struct CardView: View {
                         Button{
                             // Action
                             print("The button was pressed")
+                            
+                            isShowingSheet.toggle()
                         } label: {
                             CustomButtonView()
-                            /* Text("Explore")
-                             .fontWeight(.black)
-                             .font(.system(size: 24))
-                             .foregroundColor(.white)
-                             */
                         }
-                        
+                        .sheet(isPresented: $isShowingSheet){
+                            SettingsView()
+                                .presentationDragIndicator(.visible)
+                                .presentationDetents([.medium, .large])
+                        }
                         
                     }
                     
@@ -64,18 +66,14 @@ struct CardView: View {
                 
                 
                 ZStack {
-                    Circle()
-                        .fill(
-                            LinearGradient(colors: [Color("ColorIndigoMedium"),     Color("ColorSalmonLight")], startPoint: .topLeading, endPoint: .bottomTrailing)
-                            
-                        )
-                        .frame(width: 256, height: 256)
-                    
-                    
-                    
+                  
+                  CustomCircleView()
+                
                     Image("image-\(imageNumber)")
                         .resizable()
                         .scaledToFit()
+                        .animation(.default, value: imageNumber)
+                    
                     // Mark Footer
                 }
                 
